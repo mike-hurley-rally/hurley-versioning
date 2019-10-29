@@ -42,7 +42,7 @@ pipeline {
           def rbName = "RB-${major}.${minor}"
           sh "git tag v${version} ${params.gitRef}"
           sh "git branch ${rbName} ${params.gitRef}"
-          sh "git push ${rbName} --tags"
+          sh "git push origin ${rbName} --tags"
           build job: env.JOB_NAME, propagate: false, wait: false, parameters: [
                   string(name: 'gitRef', value: rbName),
                   string(name: 'releaseType', value: 'patch'),
