@@ -49,12 +49,9 @@ pipeline {
           sh "git tag v${version} ${params.gitRef}"
           sh "git branch ${rbName} ${params.gitRef}"
           pushBranchAndTags(rbName)
-          httpRequest(
-                  httpMode: 'POST',
-                  authentication: 'hurley-jenkins',
-                  url: "https://ci.rally-dev.com/teams-data/job/data/job/hurley-versioning/build?delay=0"
-          )
-          build job: rbName, propagate: false, wait: false, quietPeriod: 0, parameters: [
+          build job: '../hurley-versioning', propagate: true, wait: false, quietPeriod: 0
+          sleep 10
+          build job: "../hurley-versioning/${rbName}", propagate: true, wait: true, quietPeriod: 0, parameters: [
                   string(name: 'gitRef', value: rbName),
                   booleanParam(name: 'isNewRelease', value: true)
           ]
