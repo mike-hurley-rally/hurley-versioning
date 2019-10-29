@@ -49,7 +49,8 @@ pipeline {
           sh "git tag v${version} ${params.gitRef}"
           sh "git branch ${rbName} ${params.gitRef}"
           pushBranchAndTags(rbName)
-          build job: rbName, propagate: false, wait: false, parameters: [
+          build job: "..", propagate: true, wait: true, quietPeriod: 0
+          build job: rbName, propagate: false, wait: false, quietPeriod: 0, parameters: [
                   string(name: 'gitRef', value: rbName),
                   booleanParam(name: 'isNewRelease', value: true)
           ]
