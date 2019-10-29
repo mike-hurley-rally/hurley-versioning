@@ -50,7 +50,7 @@ pipeline {
           sh "git branch ${rbName} ${params.gitRef}"
           pushBranchAndTags(rbName)
           httpRequest(
-                  httpMode: 'POST'
+                  httpMode: 'POST',
                   authentication: 'hurley-jenkins',
                   url: "https://ci.rally-dev.com/teams-data/job/data/job/hurley-versioning/build?delay=0"
           )
