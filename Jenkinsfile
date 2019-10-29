@@ -74,13 +74,8 @@ pipeline {
       steps {
         script {
           sh 'git fetch --tags'
-          String[] tags = (sh(script: 'git tag', returnStdout: true)).tokenize('\n')
-          for(int i = 0; i < tags.length; i++) {
-            if (tags[i].startsWith('v') && tags[i].contains('.')) {
-              env.VERSION = tags[i].replaceFirst('v', '')
-              break
-            }
-          }
+          def version = "${env.GIT_BRANCH.substring(3)}.0"
+          env.VERSION = version
         }
       }
     }
@@ -105,6 +100,9 @@ pipeline {
       }
     }
     stage('DO THE RELEASE') {
+      when {
+        branch 'RB-*'
+      }
       steps {
         echo "Releasing ${env.VERSION}!!"
       }
