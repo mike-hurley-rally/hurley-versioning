@@ -92,7 +92,7 @@ pipeline {
           def version = rally_git_nextTag('patch').replaceFirst('v', '')
           env.VERSION = version
           sh "git tag v${version}"
-          pushBranchAndTags(env.GIT_BRANCH)
+          pushBranchAndTags('origin/' + env.GIT_BRANCH)
         }
 
         // calc patch version
