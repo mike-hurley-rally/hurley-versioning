@@ -2,7 +2,7 @@
 @Library("global-pipeline-libraries@v1.9.1") _
 
 void pushBranchAndTags(String branchName) {
-  withCredentials([usernamePassword(credentialsId: 'github-token', passwordVariable: 'GIT_PASSWORD', usernameVariable: 'GIT_USERNAME')]) {
+  withCredentials([usernamePassword(credentialsId: 'hurley-github2', passwordVariable: 'GIT_PASSWORD', usernameVariable: 'GIT_USERNAME')]) {
     sh "git push https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/mike-hurley-rally/hurley-versioning.git ${branchName} --tags"
   }
 }
