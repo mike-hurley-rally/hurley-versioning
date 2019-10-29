@@ -43,6 +43,7 @@ pipeline {
       }
       steps {
         script {
+          sh 'git fetch --tags'
           def version = rally_git_nextTag(params.releaseType).replaceFirst('v', '')
           def (major, minor, patch) = version.tokenize('.')
           def rbName = "RB-${major}.${minor}"
@@ -72,6 +73,7 @@ pipeline {
       }
       steps {
         script {
+          sh 'git fetch --tags'
           String[] tags = (sh(script: 'git tag', returnStdout: true)).tokenize('\n')
           for(int i = 0; i < tags.length; i++) {
             if (tags[i].startsWith('v') && tags[i].contains('.')) {
@@ -91,6 +93,7 @@ pipeline {
       }
       steps {
         script {
+          sh 'git fetch --tags'
           def version = rally_git_nextTag('patch').replaceFirst('v', '')
           env.VERSION = version
           sh "git tag v${version}"
