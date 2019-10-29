@@ -33,7 +33,7 @@ pipeline {
           } else if (params.gitRef.startsWith('RB-')) {
             if (!onRB) error 'Start hotfix builds from the relevant release branch.'
           }
-          else error 'Parameter gitRef must be a git sha.'
+          else if (!onRB) error 'Parameter gitRef must be a git sha.'
         }
       }
     }
