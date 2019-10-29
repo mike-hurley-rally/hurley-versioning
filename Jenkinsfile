@@ -33,7 +33,7 @@ pipeline {
           } else if (params.gitRef.startsWith('RB-')) {
             if (!onRB) error 'Start hotfix builds from the relevant release branch.'
           }
-          else error 'Parameter gitRef must be a git sha.'
+          else if (!onRB) error 'Parameter gitRef must be a git sha.'
         }
       }
     }
@@ -91,8 +91,8 @@ pipeline {
           sh 'git fetch --tags'
           def version = rally_git_nextTag('patch').replaceFirst('v', '')
           env.VERSION = version
-          sh "git tag v${version}"
-          pushBranchAndTags(env.GIT_BRANCH)
+          sh "git tag -f v${version}"
+          pushBranchAndTags('origin/' + env.GIT_BRANCH)
         }
 
         // calc patch version
