@@ -91,7 +91,7 @@ pipeline {
           sh 'git fetch --tags'
           def version = rally_git_nextTag('patch').replaceFirst('v', '')
           env.VERSION = version
-          sh "git tag v${version}"
+          sh "git tag -f v${version}"
           pushBranchAndTags('origin/' + env.GIT_BRANCH)
         }
 
