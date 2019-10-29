@@ -1,6 +1,12 @@
 #!/usr/bin/env groovy
 @Library("global-pipeline-libraries@v1.9.1") _
 
+void pushBranchAndTags(String branchName) {
+  withCredentials([usernamePassword(credentialsId: 'github-token', passwordVariable: 'GIT_PASSWORD', usernameVariable: 'GIT_USERNAME')]) {
+    sh "git push https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/mike-hurley-rally/hurley-versioning.git ${branchName} --tags"
+  }
+}
+
 pipeline {
   agent {
     label 'ec2'
@@ -42,7 +48,7 @@ pipeline {
           def rbName = "RB-${major}.${minor}"
           sh "git tag v${version} ${params.gitRef}"
           sh "git branch ${rbName} ${params.gitRef}"
-          sh "git push origin ${rbName} --tags"
+          pushBranchAndTags(rbName)
           build job: env.JOB_NAME, propagate: false, wait: false, parameters: [
                   string(name: 'gitRef', value: rbName),
                   string(name: 'releaseType', value: 'patch'),
@@ -87,7 +93,7 @@ pipeline {
           def version = rally_git_nextTag('patch').replaceFirst('v', '')
           env.VERSION = version
           sh "git tag v${version}"
-          sh "git push --tags"
+          pushBranchAndTags(env.GIT_BRANCH)
         }
 
         // calc patch version
