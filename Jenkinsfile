@@ -10,7 +10,7 @@ pipeline {
         choice(name: 'release', choices: ['rally-versioning', 'patch', 'minor', 'major'], description: 'Semantic version increment')
     }*/
     string(name: 'gitRef', trim: true, description: 'Git ref to start the release from. Git sha for a new release. Optional for hotfixes on release branches.')
-    choice(name: 'releaseType', choices: ['minor, major'], description: 'Semantic version increment. Ignored if the git ref is a release branch.')
+    choice(name: 'releaseType', choices: ['minor', 'major'], description: 'Semantic version increment. Ignored if the git ref is a release branch.')
     booleanParam(name: 'isNewRelease', defaultValue: false, description: 'NOT FOR HUMAN USE. Tells the release branch this is the initial release of the branch.')
   }
   stages {
